@@ -37,6 +37,10 @@
         .input-wrap input { width: 100%; height: 50px; padding: 0 15px; border: 1px solid var(--line); border-radius: 9px; outline: none; background: #fff; color: var(--ink); font: inherit; font-size: 14px; transition: border-color .15s, box-shadow .15s; }
         .input-wrap input::placeholder { color: #a1adba; }
         .input-wrap input:focus { border-color: #5b8def; box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+        .input-wrap input[aria-invalid="true"] { border-color: #c2414b; }
+        .input-wrap input[aria-invalid="true"]:focus { box-shadow: 0 0 0 3px rgba(194,65,75,.12); }
+        .field-error { min-height: 0; margin: 0; color: #b4232f; font-size: 12px; line-height: 1.5; }
+        .field-error:not(:empty) { margin-top: 6px; }
         .password-input { padding-right: 74px !important; }
         .toggle-password { position: absolute; top: 50%; right: 12px; transform: translateY(-50%); border: 0; padding: 5px; color: #53677f; background: transparent; font: inherit; font-size: 12px; font-weight: 650; cursor: pointer; }
         .form-options { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 2px 0 25px; font-size: 12px; }
@@ -91,26 +95,60 @@
                 </div>
                 <h2 id="login-title">Selamat datang</h2>
                 <p class="intro">Masukkan identitas akun Anda untuk melanjutkan.</p>
-                <form>
+                <form id="login-form" novalidate>
                     <div class="field">
                         <label class="field-label" for="identity">Username</label>
-                        <div class="input-wrap"><input id="identity" name="identity" type="text" placeholder="Masukkan Username" autocomplete="username"></div>
+                        <div class="input-wrap"><input id="identity" name="identity" type="text" placeholder="Masukkan Username" autocomplete="username" required aria-describedby="identity-error"></div>
+                        <p class="field-error" id="identity-error" aria-live="polite"></p>
                     </div>
                     <div class="field">
                         <label class="field-label" for="password">Kata sandi</label>
-                        <div class="input-wrap"><input class="password-input" id="password" name="password" type="password" placeholder="Masukkan kata sandi" autocomplete="current-password"><button class="toggle-password" type="button" aria-controls="password" aria-pressed="false">Tampilkan</button></div>
+                        <div class="input-wrap"><input class="password-input" id="password" name="password" type="password" placeholder="Masukkan kata sandi" autocomplete="current-password" required aria-describedby="password-error"><button class="toggle-password" type="button" aria-controls="password" aria-pressed="false">Tampilkan</button></div>
+                        <p class="field-error" id="password-error" aria-live="polite"></p>
                     </div>
                     <div class="form-options">
                         <label class="remember"><input type="checkbox" name="remember"><span>Ingat saya</span></label>
                         <a class="forgot" href="#">Lupa kata sandi?</a>
                     </div>
-                    <button class="submit-button" type="button">Masuk <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    <button class="submit-button" type="submit">Masuk <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                 </form>
                 <p class="security-note"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 19 6v5c0 4.7-3 8-7 10-4-2-7-5.3-7-10V6l7-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>UNIVERSITAS SISTEM INFORMASI</p>
             </div>
         </section>
     </main>
     <script>
+        const loginForm = document.getElementById('login-form');
+        const requiredFields = [
+            { input: document.getElementById('identity'), error: document.getElementById('identity-error'), message: 'Username wajib diisi.' },
+            { input: document.getElementById('password'), error: document.getElementById('password-error'), message: 'Kata sandi wajib diisi.' },
+        ];
+
+        function validateField(field) {
+            const isEmpty = field.input.value.trim() === '';
+            field.error.textContent = isEmpty ? field.message : '';
+            field.input.setAttribute('aria-invalid', String(isEmpty));
+            return !isEmpty;
+        }
+
+        requiredFields.forEach((field) => {
+            field.input.addEventListener('input', () => {
+                if (field.input.value.trim() !== '') {
+                    field.error.textContent = '';
+                    field.input.setAttribute('aria-invalid', 'false');
+                }
+            });
+        });
+
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const invalidFields = requiredFields.filter((field) => !validateField(field));
+
+            if (invalidFields.length > 0) {
+                invalidFields[0].input.focus();
+            }
+            // Frontend validation only: intentionally do not send login data.
+        });
+
         document.querySelector('.toggle-password').addEventListener('click', function () {
             const password = document.getElementById(this.getAttribute('aria-controls'));
             const visible = password.type === 'password';
