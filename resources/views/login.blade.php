@@ -107,8 +107,6 @@
                         <p class="field-error" id="password-error" aria-live="polite"></p>
                     </div>
                     <div class="form-options">
-                        <label class="remember"><input type="checkbox" name="remember"><span>Ingat saya</span></label>
-                        <a class="forgot" href="#">Lupa kata sandi?</a>
                     </div>
                     <button class="submit-button" type="submit">Masuk <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                 </form>
