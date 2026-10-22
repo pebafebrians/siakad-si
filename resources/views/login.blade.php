@@ -106,8 +106,6 @@
                         <div class="input-wrap"><input class="password-input" id="password" name="password" type="password" placeholder="Masukkan kata sandi" autocomplete="current-password" required aria-describedby="password-error"><button class="toggle-password" type="button" aria-controls="password" aria-pressed="false">Tampilkan</button></div>
                         <p class="field-error" id="password-error" aria-live="polite"></p>
                     </div>
-                    <div class="form-options">
-                    </div>
                     <button class="submit-button" type="submit">Masuk <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                 </form>
                 <p class="security-note"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 19 6v5c0 4.7-3 8-7 10-4-2-7-5.3-7-10V6l7-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>UNIVERSITAS SISTEM INFORMASI</p>
