@@ -19,10 +19,11 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    'name',
+    'email',
+    'password',
+    'role',  // Tambahkan ini
+];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -46,4 +47,6 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
 }
